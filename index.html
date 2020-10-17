@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timed Quiz</title>
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
+
 <body>
+    <header>
+        <h4 class="scores">
+            <a href="#high-score">View high scores</a>
+        </h4>
+        <h4 class="timer">Time:</h4>
+    </header>
+
+    <main class="quiz-content">
+        <h2 class="quiz-title">Coding Quiz Challenge</h2>
+        <p>Try to answer the following code-related questions within the time limit.<br>Keep in mind that incorrect
+            answers will penalize your score/time<br>by ten seconds!</p>
+        <button class="btn" id="start-quiz">Start Quiz</button>
+        <div id="quiz">
+            <div class="questions-container">
+                <button class="btn0"><span id="choice0"></span></button>
+                <button class="btn1"><span id="choice1"></span></button>
+                <button class="btn2"><span id="choice2"></span></button>
+                <button class="btn3"><span id="choice3"></span></button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p id="answer-score">Answer</p>
+    </footer>
     <script src="./assets/js/script.js"></script>
 </body>
+
 </html>
