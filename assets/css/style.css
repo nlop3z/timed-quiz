@@ -30,15 +30,6 @@
   }
 
   button:hover { background-color: rgb(201, 160, 255);}
-  
-  /*.start-btn {
-      
-  }*/
-
- /* #questions-container {
-    border-bottom: 3px solid lightgray;
-    padding-bottom: 10px;
-  }*/
 
 .choices > button {
     display: block;
@@ -53,14 +44,6 @@ input[type="text"] {
     margin: 100px auto 0 auto;
     max-width: 600px;
 }
-
-/*.start {
-    text-align: center;
-}*/
-
-/*#hide {
-    display: none;
-}*/
 
 .scores {
     position: absolute;
@@ -79,7 +62,7 @@ input[type="text"] {
 #feedback {
     font-style: italic;
     font-size: 1.2rem;
-    margin-top: 20px;
+    margin: 20px 175px 20px 175px;
     padding-bottom: 10px;
     color: lightgray;
     border-top: 2px solid lightgray;
@@ -95,4 +78,5 @@ input[type="text"] {
 
 .text-center { text-align: center;}
 
-.auto {margin: auto;}
+.auto {margin: auto;
+margin-bottom: 10px;}
