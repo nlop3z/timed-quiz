@@ -12,6 +12,7 @@ var timerEl = document.getElementById('time');
 var choicesEl = document.getElementById('choices');
 var initialsEl = document.getElementById('initials');
 
+
 //array of quiz questions
 const questions = [
     {
@@ -45,9 +46,9 @@ const questions = [
 var counter = 5;
 var questionCounter = 0;
 var countdown = function() {
-    if (time <= 0 || questionCounter === 4) {
+    if (time <= 0 || questionCounter > 4) {
         clearInterval(countdown);
-        endGame();
+        endQuiz();
     } else {
         time--;
         timerEl.textContent = time;
@@ -62,6 +63,7 @@ var startQuiz = function () {
 
 var grabQuestion = function () {
     document.getElementById("start-page").classList.add("hidden")
+    document.getElementById("high-score").classList.add("hidden")
     var currentQuestion = questions[questionCounter];
     questionTitleEl.textContent = currentQuestion.questionTitle;
     choicesEl.textContent = '';
@@ -91,18 +93,19 @@ var answerCheck = function () {
         time=time-10;
     } 
     if (questionCounter===questions.length){
-    endGame();
+    endQuiz();
     return;
 }
     questionCounter++
     grabQuestion();
 }
 
-//end game fx
-var endGame = function (){
+//end quiz fx
+var endQuiz = function (){
     document.getElementById("end-page").classList.remove("hidden")
     document.getElementById("feedback").classList.add("hidden")
     document.getElementById("questions-container").classList.add("hidden")
+    document.getElementById("high-score").classList.add("hidden")
 }
 
 
@@ -110,7 +113,7 @@ var endGame = function (){
 var saveHighScore = function () {
     var enterInitials = initialsEl.value.trim();
     if (initials !== '') {
-        var highscores = JSON.parse(localStorage.getItem('score')) || [];
+        var highscores = JSON.parse(localStorage.getItem('scores')) || [];
         var newScore = {
             initials: enterInitials,
             score: time
@@ -118,7 +121,17 @@ var saveHighScore = function () {
         highscores.push(newScore);
         localStorage.setItem('scores', JSON.stringify(highscores));
     }
+    getGame();
 };
+
+//restart game and get scores fx
+var getGame = function() {
+    document.getElementById("high-score").classList.remove("hidden")
+    document.getElementById("end-page").classList.add("hidden")
+    var backButton = document.getElementById('back');
+        choicesEl.appendChild(backButton)
+        backButton.classList.add ("show","auto");
+}
 
 //Listeners
 startButton.addEventListener("click", startQuiz);
