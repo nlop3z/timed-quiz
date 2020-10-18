@@ -1,87 +1,128 @@
 //global variables
 var startCountdown;
 var questionCounter = 0;
-var playerScore = 0;
+var time = 75;
+//DOM variables
+var startPage = document.getElementById('start-page');
+var startButton = document.getElementById('start-quiz');
+var submitButton = document.getElementById('submit');
+var questionsEl = document.getElementById('questions-container');
+var questionTitleEl = document.getElementById('question-title');
+var timerEl = document.getElementById('time');
+var choicesEl = document.getElementById('choices');
+var initialsEl = document.getElementById('initials');
 
 //array of quiz questions
-const quizQuestions = [
-    {  
-    question: "Commonly used data types DO NOT include:",
-    answers: {
-        a: "strings",
-        b: "booleans",
-        c: "alerts",
-        d: "numbers"
+const questions = [
+    {
+        questionTitle: "Commonly used data types DO NOT include:",
+        answers: ["strings","booleans","alerts","numbers"],
+        correctAnswer: "alerts"
     },
-    correctAnswer: "c"
-},
-{
-    question: "The condition in an if / else statement is enclosed with ____",
-    answers: {
-        a: "quotes",
-        b: "curly brackets",
-        c: "parenthesis",
-        d: "square brackets"
+    {
+        questionTitle: "The condition in an if / else statement is enclosed with ____",
+        answers: ["quotes","curly brackets","parenthesis","square brackets"],
+        correctAnswer: "parenthesis"
     },
-    correctAnswer: "c"
-},
-{   
-    question: "Arrays in JavaScript can be used to store ____",
-    answers: {
-        a: "numbers and strings",
-        b: "other arrays",
-        c: "booleans",
-        d: "all of the above",
+    {
+        questionTitle: "Arrays in JavaScript can be used to store ____",
+        answers: ["numbers and strings", "other arrays","booleans","all of the above"],
+        correctAnswer: "all of the above"
     },
-    correctAnswer: "d"
-},
-{   
-    question: "String values must be enclosed within ____ when being assigned to variables.",
-    answers: {
-        a: "commas",
-        b: "curly brackets",
-        c: "quotes",
-        d: "parenthesis"
+    {
+        questionTitle: "String values must be enclosed within ____ when being assigned to variables.",
+        answers: ["commas","curlybrackets","quotes","parenthesis"],
+        correctAnswer: "parenthesis"
     },
-},
-{   
-    question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-    answers: {
-        a: "JavaScript",
-        b: "terminal/bash",
-        c: "for loops",
-        d: "console.log"
-    },
-    correctAnswer: "d"
-}
+    {
+        questionTitle: "A very useful tool used during development and debugging for printing content to the debugger is:",
+        answers: ["JavaScript","terminal/bash","for loops","console.log"],
+        correctAnswer: "console.log"
+    }
 ];
-// var that will store output
-var buildQuiz = function() {
-    const output = [];
-}
 
-//Timer that counts down from 5
+//Timer that counts down
 var counter = 5;
 var questionCounter = 0;
-var countdown = function () {
-    console.log(counter);
-    counter--;
-    if (counter ===0) {
-        clearInterval(startCountdown);
-        };
-    };
-
-var quizButtons = document.querySelector("questions-container")
-var startButton = document.querySelector("#start-quiz");
-var startQuiz = function() {
-startCountdown = setInterval(countdown, 5000);
-    console.log("start")
-    quizQuestions [questionCounter]
-    
+var countdown = function() {
+    if (time <= 0 || questionCounter === 4) {
+        clearInterval(countdown);
+        endGame();
+    } else {
+        time--;
+        timerEl.textContent = time;
+    }
 }
 
-startButton.addEventListener("click",startQuiz);
-//quizButtons.addEventListener("click",);
+var startQuiz = function () {
+    startCountdown = setInterval(countdown, 1000);
+    console.log("start")
+    grabQuestion();
+}
+
+var grabQuestion = function () {
+    document.getElementById("start-page").classList.add("hidden")
+    var currentQuestion = questions[questionCounter];
+    questionTitleEl.textContent = currentQuestion.questionTitle;
+    choicesEl.textContent = '';
+    console.log(currentQuestion.answers.length);
+    for (var i = 0; i < currentQuestion.answers.length; i++) {
+        var choicesButton = document.createElement("button")
+        choicesButton.textContent = currentQuestion.answers[i]
+        choicesButton.setAttribute("value", currentQuestion.answers[i])
+        choicesButton.onclick=answerCheck
+        choicesEl.appendChild(choicesButton)
+        choicesButton.classList.add ("show","auto");
+        console.log(choicesButton);
+
+    }
+}
+
+//answer check fx
+var answerCheck = function () {
+    var currentQuestion = questions[questionCounter].correctAnswer;
+    var guessAnswer = this.value;
+    document.getElementById("feedback").classList.remove("hidden")
+    if (currentQuestion === guessAnswer) {
+        document.getElementById("feedback").textContent = "correct"
+    } else {
+        document.getElementById("feedback").textContent = "wrong"
+        time=time-10;
+    } 
+    if (questionCounter===questions.length){
+    endGame();
+    return;
+}
+    questionCounter++
+    grabQuestion();
+}
+
+//end game fx
+var endGame = function (){
+    document.getElementById("end-page").classList.remove("hidden")
+    document.getElementById("feedback").classList.add("hidden")
+    document.getElementById("questions-container").classList.add("hidden")
+}
+
+
+//fx to save score and enter initials
+var saveHighScore = function () {
+    var enterInitials = initialsEl.value.trim();
+    if (initials !== '') {
+        var highscores = JSON.parse(localStorage.getItem('score')) || [];
+        var newScore = {
+            initials: enterInitials,
+            score: time
+        };
+        highscores.push(newScore);
+        localStorage.setItem('scores', JSON.stringify(highscores));
+    }
+};
+
+//Listeners
+startButton.addEventListener("click", startQuiz);
+submitButton.addEventListener("click", saveHighScore);
+
 
 
 
