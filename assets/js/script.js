@@ -92,7 +92,7 @@ var answerCheck = function () {
         document.getElementById("feedback").textContent = "wrong"
         time=time-10;
     } 
-    if (questionCounter===questions.length){
+    if (questionCounter===questions.length - 1){
     endQuiz();
     return;
 }
@@ -129,8 +129,7 @@ var getGame = function() {
     document.getElementById("high-score").classList.remove("hidden")
     document.getElementById("end-page").classList.add("hidden")
     var backButton = document.getElementById('back');
-        choicesEl.appendChild(backButton)
-        backButton.classList.add ("show","auto");
+    backButton = document.createElement("button");
 }
 
 //Listeners
