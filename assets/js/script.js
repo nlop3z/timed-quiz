@@ -97,6 +97,7 @@ var answerCheck = function () {
     } 
     if (questionCounter===questions.length - 1){
     endQuiz();
+    finalScoreEl.textContent = time;
     return;
 }
     questionCounter++
@@ -127,7 +128,7 @@ var saveHighScore = function () {
         highscores.sort(function(a,b){return b.score-a.score})
         localStorage.setItem('scores', JSON.stringify(highscores));
     }
-    finalScoreEl.textContent = newScore.time;
+    //finalScoreEl.textContent = newScore.time;
     getGame(highscores);
 };
 
@@ -144,7 +145,7 @@ var getGame = function(storageScores) {
         scoreEl.innerHTML="initials: " + storageScores[index].initials + " score: " + storageScores[index].score
         document.getElementById("list").append(scoreEl);
     }
-
+    clearInterval();
 }
 
 var clearScores = function() {
@@ -161,7 +162,8 @@ var resetQuiz = function () {
     document.getElementById("list").innerHTML = ""; 
     questionCounter = 0;
     time = 75;
-    timerEl = time; 
+    timerEl.textContent = 0;
+    clearInterval();    
 }
 
 //Listeners
