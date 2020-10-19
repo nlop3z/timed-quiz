@@ -2,15 +2,19 @@
 var startCountdown;
 var questionCounter = 0;
 var time = 75;
+var highscores;
 //DOM variables
 var startPage = document.getElementById('start-page');
 var startButton = document.getElementById('start-quiz');
 var submitButton = document.getElementById('submit');
+var clearButton = document.getElementById('clear-high-scores');
 var questionsEl = document.getElementById('questions-container');
 var questionTitleEl = document.getElementById('question-title');
 var timerEl = document.getElementById('time');
 var choicesEl = document.getElementById('choices');
 var initialsEl = document.getElementById('initials');
+var finalScoreEl = document.getElementById('final-score');
+var goBackButton = document.getElementById('back');
 
 
 //array of quiz questions
@@ -44,10 +48,9 @@ const questions = [
 
 //Timer that counts down
 var counter = 5;
-var questionCounter = 0;
 var countdown = function() {
     if (time <= 0 || questionCounter > 4) {
-        clearInterval(countdown);
+        
         endQuiz();
     } else {
         time--;
@@ -57,17 +60,17 @@ var countdown = function() {
 
 var startQuiz = function () {
     startCountdown = setInterval(countdown, 1000);
-    //console.log("start")
     grabQuestion();
 }
 
 var grabQuestion = function () {
     document.getElementById("start-page").classList.add("hidden")
     document.getElementById("high-score").classList.add("hidden")
+    document.getElementById("questions-container").classList.remove("hidden")
     var currentQuestion = questions[questionCounter];
     questionTitleEl.textContent = currentQuestion.questionTitle;
     choicesEl.textContent = '';
-    console.log(currentQuestion.answers.length);
+    //console.log(currentQuestion.answers.length);
     for (var i = 0; i < currentQuestion.answers.length; i++) {
         var choicesButton = document.createElement("button")
         choicesButton.textContent = currentQuestion.answers[i]
@@ -75,7 +78,7 @@ var grabQuestion = function () {
         choicesButton.onclick=answerCheck
         choicesEl.appendChild(choicesButton)
         choicesButton.classList.add ("show","auto");
-        console.log(choicesButton);
+        //console.log(choicesButton);
 
     }
 }
@@ -102,10 +105,12 @@ var answerCheck = function () {
 
 //end quiz fx
 var endQuiz = function (){
+    clearInterval(startCountdown);
     document.getElementById("end-page").classList.remove("hidden")
     document.getElementById("feedback").classList.add("hidden")
     document.getElementById("questions-container").classList.add("hidden")
     document.getElementById("high-score").classList.add("hidden")
+
 }
 
 
@@ -113,28 +118,57 @@ var endQuiz = function (){
 var saveHighScore = function () {
     var enterInitials = initialsEl.value.trim();
     if (initials !== '') {
-        var highscores = JSON.parse(localStorage.getItem('scores')) || [];
+        highscores = JSON.parse(localStorage.getItem('scores')) || [];
         var newScore = {
             initials: enterInitials,
             score: time
         };
         highscores.push(newScore);
+        highscores.sort(function(a,b){return b.score-a.score})
         localStorage.setItem('scores', JSON.stringify(highscores));
     }
-    getGame();
+    getGame(highscores);
 };
 
 //restart game and get scores fx
-var getGame = function() {
+var getGame = function(storageScores) {
     document.getElementById("high-score").classList.remove("hidden")
     document.getElementById("end-page").classList.add("hidden")
     var backButton = document.getElementById('back');
     backButton = document.createElement("button");
+    document.getElementById("list").classList.remove("hidden")
+    var list = document.getElementById("list")
+    for (let index=0; index < highscores.length && index < 3; index++){
+        var scoreEl = document.createElement("li");
+        scoreEl.innerHTML="initials: " + storageScores[index].initials + " score: " + storageScores[index].score
+        document.getElementById("list").append(scoreEl);
+    }
+
+}
+
+var clearScores = function() {
+    localStorage.removeItem('scores');
+    document.getElementById("list").innerHTML = "";    
+}
+
+var resetQuiz = function () {
+    document.getElementById("end-page").classList.add("hidden")
+    document.getElementById("feedback").classList.add("hidden")
+    document.getElementById("questions-container").classList.add("hidden")
+    document.getElementById("high-score").classList.add("hidden")
+    document.getElementById("start-page").classList.remove("hidden")
+    document.getElementById("list").innerHTML = ""; 
+    questionCounter = 0;
+    time = 75;
+    timerEl = time; 
 }
 
 //Listeners
 startButton.addEventListener("click", startQuiz);
 submitButton.addEventListener("click", saveHighScore);
+clearButton.addEventListener("click", clearScores);
+goBackButton.addEventListener("click", resetQuiz);
+
 
 
 
