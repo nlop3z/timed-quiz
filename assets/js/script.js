@@ -127,6 +127,7 @@ var saveHighScore = function () {
         highscores.sort(function(a,b){return b.score-a.score})
         localStorage.setItem('scores', JSON.stringify(highscores));
     }
+    finalScoreEl.textContent = newScore.time;
     getGame(highscores);
 };
 
