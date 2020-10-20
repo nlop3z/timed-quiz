@@ -51,6 +51,8 @@ input[type="text"] {
 
 #end-page h2 { text-align: center; }
 
+#list { list-style-type: none;}
+
 #feedback {
     font-style: italic;
     font-size: 1.2rem;

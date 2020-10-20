@@ -150,6 +150,7 @@ var resetQuiz = function () {
     time = 75;
     timerEl.textContent = 0;
     clearInterval();
+    initialsEl.value = "";
 }
 // Listeners
 startButton.addEventListener("click", startQuiz);
