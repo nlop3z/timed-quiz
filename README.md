@@ -10,7 +10,7 @@ A quiz run in the browser that tests your JavaScript fundamentals knowledge
 
 ## URL deployed application:
 
-https://nlop3z.github.io/timed-quiz/Develop/
+https://nlop3z.github.io/timed-quiz/
 
 ## URL GitHub repository:
 
